@@ -22,7 +22,7 @@ export default {
         {
           action: 'mdi-file-tree',
           title: '课程管理',
-          index: '/class'
+          index: '/course'
         }
       ],
       right: null,

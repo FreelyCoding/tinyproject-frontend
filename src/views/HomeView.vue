@@ -47,12 +47,12 @@ export default {
         {
           action: 'mdi-school-outline',
           title: '学生管理',
-          index: '/student'
+          index: '/student/student-manage'
         },
         {
           action: 'mdi-file-tree',
           title: '课程管理',
-          index: '/class'
+          index: '/course'
         },
         {
           action: 'mdi-dialpad',
