@@ -65,7 +65,7 @@
               item-color="success"
               class="search-textarea mr-3"
               append-icon="mdi-magnify"
-              v-model="filter.grade"
+              v-model="filter.college_grade"
               label="年级"
               outlined
               clearable
@@ -133,16 +133,97 @@ export default {
         id: '',
         name: '',
         class: '',
-        grade: '',
+        college_grade: '',
         students: [
           {
             "id": 1,
-            "real_name": 'Jack',
-            "grade": 2020,
+            "student_id": 20231000,
+            "name": 'Jack',
+            "college_grade": 2020,
             "major": '计算机科学与技术',
             'class': 200611,
             'email': '114514@gmail.com',
-          }
+          },          {
+            "id": 1,
+            "student_id": 20231000,
+            "name": 'Jack',
+            "college_grade": 2020,
+            "major": '计算机科学与技术',
+            'class': 200611,
+            'email': '114514@gmail.com',
+          },          {
+            "id": 1,
+            "student_id": 20231000,
+            "name": 'Jack',
+            "college_grade": 2020,
+            "major": '计算机科学与技术',
+            'class': 200611,
+            'email': '114514@gmail.com',
+          },          {
+            "id": 1,
+            "student_id": 20231000,
+            "name": 'Jack',
+            "college_grade": 2020,
+            "major": '计算机科学与技术',
+            'class': 200611,
+            'email': '114514@gmail.com',
+          },          {
+            "id": 1,
+            "student_id": 20231000,
+            "name": 'Jack',
+            "college_grade": 2020,
+            "major": '计算机科学与技术',
+            'class': 200611,
+            'email': '114514@gmail.com',
+          },          {
+            "id": 1,
+            "student_id": 20231000,
+            "name": 'Jack',
+            "college_grade": 2020,
+            "major": '计算机科学与技术',
+            'class': 200611,
+            'email': '114514@gmail.com',
+          },          {
+            "id": 1,
+            "student_id": 20231000,
+            "name": 'Jack',
+            "college_grade": 2020,
+            "major": '计算机科学与技术',
+            'class': 200611,
+            'email': '114514@gmail.com',
+          },          {
+            "id": 1,
+            "student_id": 20231000,
+            "name": 'Jack',
+            "college_grade": 2020,
+            "major": '计算机科学与技术',
+            'class': 200611,
+            'email': '114514@gmail.com',
+          },          {
+            "id": 1,
+            "student_id": 20231000,
+            "name": 'Jack',
+            "college_grade": 2020,
+            "major": '计算机科学与技术',
+            'class': 200611,
+            'email': '114514@gmail.com',
+          },          {
+            "id": 1,
+            "student_id": 20231000,
+            "name": 'Jack',
+            "college_grade": 2020,
+            "major": '计算机科学与技术',
+            'class': 200611,
+            'email': '114514@gmail.com',
+          },          {
+            "id": 1,
+            "student_id": 20231000,
+            "name": 'Jack',
+            "college_grade": 2020,
+            "major": '计算机科学与技术',
+            'class': 200611,
+            'email': '114514@gmail.com',
+          },
         ]
       },
       page: 1,
@@ -152,7 +233,19 @@ export default {
       itemsPerPageList: [5, 10, 15, 20, 30, 50],
     }
   },
+  watch: {
+    page: async function () {
+      await this.refresh();
+    },
+    itemsPerPage: async function () {
+      await this.updateWithFix();
+    }
+  },
   methods: {
+    async refresh() {
+      this.pageCount = Math.ceil(this.filter.students.length / this.itemsPerPage);
+      console.log(this.pageCount);
+    },
     async jump() {
       let next = !isNaN(parseInt(this.jumpPage, 10)) ? parseInt(this.jumpPage) : this.page;
       next = Math.min(Math.max(1, next), this.pageCount);
@@ -191,9 +284,10 @@ export default {
         path: 'student-info/' + item['id'],
         query: {
           id: item['id'],
-          real_name: item['real_name'],
+          student_id: item['student_id'],
+          name: item['name'],
           email: item['email'],
-          grade: item['grade'],
+          college_grade: item['college_grade'],
           class: item['class'],
           major: item['major']
         }
@@ -204,16 +298,20 @@ export default {
     headers() {
       return [
         {
-          text: '学号',
+          text: 'ID',
           value: 'id'
         },
         {
+          text: '学号',
+          value: 'student_id'
+        },
+        {
           text: '姓名',
-          value: 'real_name'
+          value: 'name'
         },
         {
           text: '年级',
-          value: 'grade'
+          value: 'college_grade'
         },
         {
           text: '专业',
