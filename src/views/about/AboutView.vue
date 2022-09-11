@@ -1,31 +1,5 @@
 <template>
   <v-app>
-    <v-card
-        color="grey lighten-4"
-        flat
-        tile
-    >
-    <v-toolbar dense>
-      <v-app-bar-nav-icon></v-app-bar-nav-icon>
-
-      <v-toolbar-title>关于</v-toolbar-title>
-
-      <v-spacer></v-spacer>
-
-      <v-btn icon>
-        <v-icon>mdi-magnify</v-icon>
-      </v-btn>
-
-      <v-btn icon>
-        <v-icon>mdi-heart</v-icon>
-      </v-btn>
-
-      <v-btn icon>
-        <v-icon>mdi-dots-vertical</v-icon>
-      </v-btn>
-    </v-toolbar>
-    </v-card>
-
     <v-container>
       <v-card
           class="mx-auto"
@@ -34,8 +8,13 @@
         <v-card-text>
           <div>Word of the Day</div>
           <p class="text-h4 text--primary">
-            ABOUT
+            el·ee·mos·y·nar·y
           </p>
+          <p>adjective</p>
+          <div class="text--primary">
+            relating to or dependent on charity; charitable.<br>
+            "an eleemosynary educational institution."
+          </div>
         </v-card-text>
         <v-card-actions>
           <v-btn

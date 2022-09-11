@@ -8,6 +8,23 @@
 export default {
   data () {
     return {
+      items: [
+        {
+          action: 'mdi-dialpad',
+          title: '主页',
+          index: '/'
+        },
+        {
+          action: 'mdi-school-outline',
+          title: '学生管理',
+          index: '/student'
+        },
+        {
+          action: 'mdi-file-tree',
+          title: '课程管理',
+          index: '/class'
+        }
+      ],
       right: null,
       mini: true,
     }

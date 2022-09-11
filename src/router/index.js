@@ -3,10 +3,6 @@ import VueRouter from 'vue-router'
 import HomeView from '@/views/HomeView.vue'
 import AboutView from "@/views/about/AboutView";
 import MainView from "@/views/main/MainView";
-import studentManage from "@/views/student/studentManage";
-import studentInfo from "@/views/student/studentInfo";
-import courseInfo from "@/views/course/courseInfo";
-import courseManage from "@/views/course/courseManage";
 
 Vue.use(VueRouter)
 
@@ -38,36 +34,18 @@ const routes = [
   {
     path: '/student',
     name: 'student',
-    component: HomeView,
-    children: [
-      {
-        path: 'student-manage',
-        name: 'student-manage',
-        component: studentManage
-      },
-      {
-        path: 'student-info/:id',
-        name: 'student-info',
-        component: studentInfo
-      }
-    ]
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: HomeView
   },
   {
-    path: '/course',
-    name: 'course',
-    component: HomeView,
-    children: [
-      {
-        path: 'course-manage',
-        name: 'course-manage',
-        component: courseManage
-      },
-      {
-        path: 'course-info/:id',
-        name: 'course-info',
-        component: courseInfo
-      }
-    ]
+    path: '/class',
+    name: 'class',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: HomeView
   }
 ]
 
