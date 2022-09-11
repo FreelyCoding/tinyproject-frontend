@@ -1,5 +1,31 @@
 <template>
   <v-app>
+    <v-card
+        color="grey lighten-4"
+        flat
+        tile
+    >
+      <v-toolbar dense>
+        <v-app-bar-nav-icon></v-app-bar-nav-icon>
+
+        <v-toolbar-title>学生管理</v-toolbar-title>
+
+        <v-spacer></v-spacer>
+
+        <v-btn icon>
+          <v-icon>mdi-magnify</v-icon>
+        </v-btn>
+
+        <v-btn icon>
+          <v-icon>mdi-heart</v-icon>
+        </v-btn>
+
+        <v-btn icon>
+          <v-icon>mdi-dots-vertical</v-icon>
+        </v-btn>
+      </v-toolbar>
+    </v-card>
+
     <v-container>
       <v-card class="mx-auto mt-6" max-width="90%">
       <v-container class="text-left" v-if="!$vuetify.breakpoint.mobile">
@@ -123,7 +149,6 @@ export default {
       jumpPage: '',
       pageCount: 1,
       itemsPerPage: 15,
-      roleList: ['学生', '教员'],
       itemsPerPageList: [5, 10, 15, 20, 30, 50],
     }
   },
@@ -166,8 +191,11 @@ export default {
         path: 'student-info/' + item['id'],
         query: {
           id: item['id'],
-          name: item['real_name'],
+          real_name: item['real_name'],
           email: item['email'],
+          grade: item['grade'],
+          class: item['class'],
+          major: item['major']
         }
       });
     },
