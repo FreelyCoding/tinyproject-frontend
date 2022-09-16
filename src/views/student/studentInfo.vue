@@ -94,7 +94,7 @@
             <v-card-text>
               <v-row no-gutters>
                 <v-col class="text-right">
-                  <v-btn text class="body-1 text-right" color="error" @click="showDialog">修改个人信息</v-btn>
+                  <v-btn text class="body-1 text-right" color="error" @click="showDialog">修改学生信息</v-btn>
                 </v-col>
               </v-row>
             </v-card-text>
@@ -144,7 +144,7 @@
                       ></v-text-field>
                     </v-col>
                     <v-btn class="ma-2 ml-3" color="success" @click="cancel">取消修改</v-btn>
-                    <v-btn class="ma-2 ml-3" color="error" @click="cancel">确认修改</v-btn>
+                    <v-btn class="ma-2 ml-3" color="error" @click="submitStudentProfile">确认修改</v-btn>
                   </v-row>
                 </v-form>
               </v-card-text>
@@ -165,7 +165,7 @@
             calculate-widths
         >
           <template v-slot:[`item.action`]="{ item }">
-            <v-btn text color="primary" class="ml-n3" @click="detail(item)">
+            <v-btn text color="primary" class="ml-n3" @click="quit(item)">
               <v-icon small class="mr-2">mdi-pencil</v-icon>退选
             </v-btn>
           </template>
@@ -210,7 +210,7 @@
             calculate-widths
         >
           <template v-slot:[`item.action`]="{ item }">
-            <v-btn text color="primary" class="ml-n3" @click="detail(item)">
+            <v-btn text color="primary" class="ml-n3" @click="choose(item)">
               <v-icon small class="mr-2">mdi-pencil</v-icon>选课
             </v-btn>
           </template>
@@ -250,6 +250,8 @@
 
 
 <script>
+import {delClass, getStudentProfile, queryStudentCourse, updateStudent} from "@/api/student";
+
 export default {
   data () {
     return {
@@ -259,13 +261,13 @@ export default {
       dialog: false,
       editedItem: {
         // TODO: 改成向后端请求student_profile后，这里就不用赋初值了
-        id: this.$route.query['id'],
-        name: this.$route.query['real_name'],
-        major: this.$route.query['major'],
-        class: this.$route.query['class'],
-        email: this.$route.query['email'],
-        college_grade: this.$route.query['college_grade'],
-        student_id: this.$route.query['student_id'],
+        id: '',
+        name: '',
+        major: '',
+        class: '',
+        email: '',
+        college_grade: '',
+        student_id: '',
         valid: true
       },
       student_profile: {
@@ -449,27 +451,27 @@ export default {
         {
           icon: 'mdi-card-account-details',
           type: '学号',
-          value: this.$route.query['student_id']
+          value: this.student_profile['student_id']
         },
         {
           icon: 'mdi-account-multiple',
           type: '专业',
-          value: this.$route.query['major']
+          value: this.student_profile['major']
         },
         {
           icon: 'mdi-email',
           type: '邮箱',
-          value: this.$route.query['email']
+          value: this.student_profile['email']
         },
         {
           icon: 'mdi-calendar-range',
           type: '年级',
-          value: this.$route.query['college_grade']
+          value: this.student_profile['college_grade']
         },
         {
           icon: 'mdi-school',
           type: '班级',
-          value: this.$route.query['class']
+          value: this.student_profile['class']
         }
       ];
     },
@@ -480,10 +482,27 @@ export default {
   async mounted() {
     await this.refresh();
   },
-  async refresh() {
-    // TODO: 与后端交互，获取student_profile, cur_courses, available_courses
-  },
   methods: {
+    async quit(item) {
+      let payload = {
+        student_id: this.student_profile['student_id'],
+        course_id: item['course_id']
+      };
+      let response = await delClass(payload);
+      console.log(response)
+      await this.refresh();
+    },
+    async refresh() {
+      let payload = {
+        student_id: this.$route.query['student_id']
+      };
+      let response_profile = await getStudentProfile(payload);
+      console.log(response_profile)
+      this.student_profile = response_profile.data;
+      let response_current_course = await queryStudentCourse(payload);
+      console.log(response_current_course)
+      this.cur_course_filter.courses = response_current_course.data;
+    },
     async cur_course_jump() {
       let next = !isNaN(parseInt(this.cur_course_jumpPage, 10)) ? parseInt(this.cur_course_jumpPage) : this.page;
       next = Math.min(Math.max(1, next), this.cur_course_pageCount);
@@ -501,15 +520,28 @@ export default {
       this.available_course_jumpPage = '';
     },
     showDialog() {
-      // TODO: 改成向后端请求student_profile后，需要相应修改这里
       this.dialog = true;
-      this.editedItem.name = this.$route.query['name'];
-      this.editedItem.major = this.$route.query['major'];
-      this.editedItem.class = this.$route.query['class'];
-      this.editedItem.id = this.$route.query['id'];
-      this.editedItem.student_id = this.$route.query['student_id'];
-      this.editedItem.college_grade = this.$route.query['college_grade'];
-      this.editedItem.email = this.$route.query['email'];
+      this.editedItem.name = this.student_profile['name'];
+      this.editedItem.major = this.student_profile['major'];
+      this.editedItem.class = this.student_profile['class'];
+      this.editedItem.id = this.student_profile['id'];
+      this.editedItem.student_id = this.student_profile['student_id'];
+      this.editedItem.college_grade = this.student_profile['college_grade'];
+      this.editedItem.email = this.student_profile['email'];
+    },
+    submitStudentProfile() {
+      let response =  updateStudent({
+        name: this.editedItem.name,
+        major: this.editedItem.major,
+        class: this.editedItem.class,
+        id: this.editedItem.id,
+        student_id: this.editedItem.student_id,
+        college_grade: this.editedItem.college_grade,
+        email: this.editedItem.email,
+      });
+      console.log(response)
+      this.refresh();
+      this.cancel();
     },
     cancel() {
       this.dialog = false;

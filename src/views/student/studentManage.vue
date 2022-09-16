@@ -125,6 +125,8 @@
 </template>
 
 <script>
+import {queryAllStudent} from "@/api/student";
+
 export default {
   data () {
     return {
@@ -134,97 +136,7 @@ export default {
         name: '',
         class: '',
         college_grade: '',
-        students: [
-          {
-            "id": 1,
-            "student_id": 20231000,
-            "name": 'Jack',
-            "college_grade": 2020,
-            "major": '计算机科学与技术',
-            'class': 200611,
-            'email': '114514@gmail.com',
-          },          {
-            "id": 1,
-            "student_id": 20231000,
-            "name": 'Jack',
-            "college_grade": 2020,
-            "major": '计算机科学与技术',
-            'class': 200611,
-            'email': '114514@gmail.com',
-          },          {
-            "id": 1,
-            "student_id": 20231000,
-            "name": 'Jack',
-            "college_grade": 2020,
-            "major": '计算机科学与技术',
-            'class': 200611,
-            'email': '114514@gmail.com',
-          },          {
-            "id": 1,
-            "student_id": 20231000,
-            "name": 'Jack',
-            "college_grade": 2020,
-            "major": '计算机科学与技术',
-            'class': 200611,
-            'email': '114514@gmail.com',
-          },          {
-            "id": 1,
-            "student_id": 20231000,
-            "name": 'Jack',
-            "college_grade": 2020,
-            "major": '计算机科学与技术',
-            'class': 200611,
-            'email': '114514@gmail.com',
-          },          {
-            "id": 1,
-            "student_id": 20231000,
-            "name": 'Jack',
-            "college_grade": 2020,
-            "major": '计算机科学与技术',
-            'class': 200611,
-            'email': '114514@gmail.com',
-          },          {
-            "id": 1,
-            "student_id": 20231000,
-            "name": 'Jack',
-            "college_grade": 2020,
-            "major": '计算机科学与技术',
-            'class': 200611,
-            'email': '114514@gmail.com',
-          },          {
-            "id": 1,
-            "student_id": 20231000,
-            "name": 'Jack',
-            "college_grade": 2020,
-            "major": '计算机科学与技术',
-            'class': 200611,
-            'email': '114514@gmail.com',
-          },          {
-            "id": 1,
-            "student_id": 20231000,
-            "name": 'Jack',
-            "college_grade": 2020,
-            "major": '计算机科学与技术',
-            'class': 200611,
-            'email': '114514@gmail.com',
-          },          {
-            "id": 1,
-            "student_id": 20231000,
-            "name": 'Jack',
-            "college_grade": 2020,
-            "major": '计算机科学与技术',
-            'class': 200611,
-            'email': '114514@gmail.com',
-          },          {
-            "id": 1,
-            "student_id": 20231000,
-            "name": 'Jack',
-            "college_grade": 2020,
-            "major": '计算机科学与技术',
-            'class': 200611,
-            'email': '114514@gmail.com',
-          },
-        ]
+        students: []
       },
       page: 1,
       jumpPage: '',
@@ -241,12 +153,33 @@ export default {
       await this.updateWithFix();
     }
   },
+  async mounted() {
+    await this.refresh();
+  },
   methods: {
     async refresh() {
       // TODO: 筛选的逻辑需要后端支持，后端查询API增加stduent_id, name, class, college_grade字段，返回符合要求的项目从而实现筛选
       // TODO: 同理，每次重新选择分页都会刷新，分页也需要后端支持，即传入limit和offset，返回相应页面的limit个数值
+      let payload = {
+        limit: this.itemsPerPage,
+        offset: (this.page - 1) * this.itemsPerPage
+      };
+      if (this.filter.id !== null && this.filter.id !== '') {
+        payload['student_id'] = this.filter.student_id;
+      }
+      if (this.filter.name !== null && this.filter.name !== '') {
+        payload['name'] = this.filter.name;
+      }
+      if (this.filter.class !== null && this.filter.class !== '') {
+        payload['class'] = this.filter.class;
+      }
+      if (this.filter.college_grade !== null && this.filter.college_grade !== '') {
+        payload['college_grade'] = this.filter.college_grade;
+      }
+      let response = await queryAllStudent(payload);
+      console.log(response)
+      this.filter.students = response.data
       this.pageCount = Math.ceil(this.filter.students.length / this.itemsPerPage);
-      console.log(this.pageCount);
     },
     async jump() {
       let next = !isNaN(parseInt(this.jumpPage, 10)) ? parseInt(this.jumpPage) : this.page;
