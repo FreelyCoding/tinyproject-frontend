@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+axios.defaults.baseURL="http://localhost:8000";
+
 export async function getRequest(url, params) {
     try {
         return await axios(url, {
