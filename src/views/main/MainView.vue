@@ -36,7 +36,6 @@
             欢迎来到学生选课管理系统
           </p>
         </v-card-text>
-
         <v-card-actions>
           <v-btn
               text

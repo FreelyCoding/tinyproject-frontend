@@ -130,7 +130,7 @@ export default {
     return {
       name: 'studentManage',
       filter: {
-        id: '',
+        student_id: '',
         name: '',
         class: '',
         college_grade: '',
@@ -243,6 +243,8 @@ export default {
   },
   methods: {
     async refresh() {
+      // TODO: 筛选的逻辑需要后端支持，后端查询API增加stduent_id, name, class, college_grade字段，返回符合要求的项目从而实现筛选
+      // TODO: 同理，每次重新选择分页都会刷新，分页也需要后端支持，即传入limit和offset，返回相应页面的limit个数值
       this.pageCount = Math.ceil(this.filter.students.length / this.itemsPerPage);
       console.log(this.pageCount);
     },
@@ -258,6 +260,7 @@ export default {
       await this.updateWithFix();
     },
     async updateWithFix() {
+      // page设了一个watch属性，如果page的值发生变化，则一定会刷新页面
       if (this.page === 1) {
         await this.refresh();
       } else {
@@ -268,10 +271,7 @@ export default {
       if (this.filter.id !== null && this.filter.id !== '') {
         return true;
       }
-      if (this.filter.name !== null && this.filter.name !== '') {
-        return true;
-      }
-      return this.filter.role !== null && this.filter.role !== '';
+      // TODO: 补齐所有的select
     },
     async clear() {
       if (this.hasSelect()) {
