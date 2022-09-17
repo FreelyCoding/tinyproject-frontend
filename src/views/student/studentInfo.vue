@@ -512,7 +512,6 @@ export default {
         this.available_course_page = 1;
       }
     },
-
     async quit(item) {
       let payload = {
         student_id: this.student_profile['student_id'],
