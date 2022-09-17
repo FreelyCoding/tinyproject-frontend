@@ -28,53 +28,6 @@
 
     <v-container>
       <v-card class="mx-auto mt-6" max-width="90%">
-      <v-container class="text-left" v-if="!$vuetify.breakpoint.mobile">
-        <v-form ref="form" class="mb-n6" lazy-validation @keyup.enter.native="select">
-          <v-text-field
-              color="success"
-              class="search-textarea mr-3"
-              v-model="filter.id"
-              append-icon="mdi-magnify"
-              label="学号"
-              outlined
-              clearable
-              dense
-          ></v-text-field>
-          <v-text-field
-              color="success"
-              class="search-textarea mr-3"
-              v-model="filter.name"
-              append-icon="mdi-magnify"
-              label="姓名"
-              outlined
-              clearable
-              dense
-          ></v-text-field>
-          <v-text-field
-              color="success"
-              class="search-textarea mr-3"
-              v-model="filter.class"
-              append-icon="mdi-magnify"
-              label="班级"
-              outlined
-              clearable
-              dense
-          ></v-text-field>
-          <v-text-field
-              color="success"
-              item-color="success"
-              class="search-textarea mr-3"
-              append-icon="mdi-magnify"
-              v-model="filter.college_grade"
-              label="年级"
-              outlined
-              clearable
-              dense
-          ></v-text-field>
-          <v-btn color="success" @click="select" class="mb-1 mr-3" height="40px">筛选</v-btn>
-          <v-btn color="warning" @click="clear" class="mb-1" height="40px">清除筛选</v-btn>
-        </v-form>
-      </v-container>
         <v-divider></v-divider>
         <v-data-table
             :headers="headers"

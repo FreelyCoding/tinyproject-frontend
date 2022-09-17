@@ -6,7 +6,8 @@ const apiRoute = {
     delClass: '/student/del',
     getStudentProfile: '/student/profile',
     updateStudent: '/student/update',
-    queryStudentCourse: '/student/query'
+    queryStudentCourse: '/student/query',
+    queryStudentSelectable: '/student/selectable',
 };
 
 export async function queryAllStudent(data) {
@@ -32,3 +33,8 @@ export async function addStudent(data) {
 export async function delClass(data) {
     return postRequest(apiRoute.delClass, data);
 }
+
+export async function queryStudentSelectable(data) {
+    return getRequest(apiRoute.queryStudentSelectable, data);
+}
+
