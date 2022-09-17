@@ -249,7 +249,6 @@ export default {
         {
           text: '专业',
           value: 'major',
-          width: '12%'
         },
         {
           text: '班级',
@@ -262,7 +261,6 @@ export default {
         {
           text: '用户管理',
           value: 'action',
-          width: '32%'
         }
       ];
     }

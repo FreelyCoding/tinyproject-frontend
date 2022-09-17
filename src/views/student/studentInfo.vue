@@ -391,7 +391,6 @@ export default {
         {
           text: '教室',
           value: 'classroom',
-          width: '12%'
         },
         {
           text: '最大容量',
@@ -404,7 +403,6 @@ export default {
         {
           text: '退选',
           value: 'action',
-          width: '32%'
         }
       ];
     },
@@ -429,7 +427,6 @@ export default {
         {
           text: '教室',
           value: 'classroom',
-          width: '12%'
         },
         {
           text: '最大容量',
@@ -442,7 +439,6 @@ export default {
         {
           text: '选课',
           value: 'action',
-          width: '32%'
         }
       ];
     },
