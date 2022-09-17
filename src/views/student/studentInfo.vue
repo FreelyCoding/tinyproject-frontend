@@ -250,7 +250,14 @@
 
 
 <script>
-import {delClass, getStudentProfile, queryStudentCourse, queryStudentSelectable, updateStudent} from "@/api/student";
+import {
+  addClass,
+  delClass,
+  getStudentProfile,
+  queryStudentCourse,
+  queryStudentSelectable,
+  updateStudent
+} from "@/api/student";
 
 export default {
   data () {
@@ -391,7 +398,6 @@ export default {
         {
           text: '教室',
           value: 'classroom',
-          width: '12%'
         },
         {
           text: '最大容量',
@@ -404,7 +410,6 @@ export default {
         {
           text: '退选',
           value: 'action',
-          width: '32%'
         }
       ];
     },
@@ -429,7 +434,6 @@ export default {
         {
           text: '教室',
           value: 'classroom',
-          width: '12%'
         },
         {
           text: '最大容量',
@@ -442,7 +446,6 @@ export default {
         {
           text: '选课',
           value: 'action',
-          width: '32%'
         }
       ];
     },
@@ -490,8 +493,6 @@ export default {
       await this.updateWithFix();
     },
   },
-
-
   beforeMount() {
     this.dialogWidth = this.$vuetify.breakpoint.mobile ? '85%' : '30%';
   },
@@ -518,6 +519,15 @@ export default {
         course_id: item['course_id']
       };
       let response = await delClass(payload);
+      console.log(response)
+      await this.refresh();
+    },
+    async choose(item) {
+      let payload = {
+        student_id: this.student_profile['student_id'],
+        course_id: item['course_id']
+      };
+      let response = await addClass(payload);
       console.log(response)
       await this.refresh();
     },
