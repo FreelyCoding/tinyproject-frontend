@@ -2,7 +2,7 @@ import { getRequest, postRequest } from '@/api/request';
 
 const apiRoute = {
     queryAllStudent: '/student/all',
-    addStudent: '/student/add',
+    addClass: '/student/add',
     delClass: '/student/del',
     getStudentProfile: '/student/profile',
     updateStudent: '/student/update',
@@ -26,8 +26,8 @@ export async function updateStudent(data) {
     return postRequest(apiRoute.updateStudent, data);
 }
 
-export async function addStudent(data) {
-    return postRequest(apiRoute.addStudent, data);
+export async function addClass(data) {
+    return postRequest(apiRoute.addClass, data);
 }
 
 export async function delClass(data) {
