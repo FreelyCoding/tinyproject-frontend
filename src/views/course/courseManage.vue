@@ -28,53 +28,6 @@
 
     <v-container>
       <v-card class="mx-auto mt-6" max-width="90%">
-        <v-container class="text-left" v-if="!$vuetify.breakpoint.mobile">
-          <v-form ref="form" class="mb-n6" lazy-validation @keyup.enter.native="select">
-            <v-text-field
-                color="success"
-                class="search-textarea mr-3"
-                v-model="filter.id"
-                append-icon="mdi-magnify"
-                label="课程号"
-                outlined
-                clearable
-                dense
-            ></v-text-field>
-            <v-text-field
-                color="success"
-                class="search-textarea mr-3"
-                v-model="filter.name"
-                append-icon="mdi-magnify"
-                label="课程名"
-                outlined
-                clearable
-                dense
-            ></v-text-field>
-            <v-text-field
-                color="success"
-                class="search-textarea mr-3"
-                v-model="filter.teacher"
-                append-icon="mdi-magnify"
-                label="授课老师"
-                outlined
-                clearable
-                dense
-            ></v-text-field>
-            <v-text-field
-                color="success"
-                item-color="success"
-                class="search-textarea mr-3"
-                append-icon="mdi-magnify"
-                v-model="filter.classroom"
-                label="教室"
-                outlined
-                clearable
-                dense
-            ></v-text-field>
-            <v-btn color="success" @click="select" class="mb-1 mr-3" height="40px">筛选</v-btn>
-            <v-btn color="warning" @click="clear" class="mb-1" height="40px">清除筛选</v-btn>
-          </v-form>
-        </v-container>
         <v-divider></v-divider>
         <v-data-table
             :headers="headers"
@@ -125,6 +78,8 @@
 </template>
 
 <script>
+import {queryAllCourse} from "@/api/course";
+
 export default {
   data () {
     return {
@@ -137,97 +92,7 @@ export default {
         classroom: '',
         max_capacity: '',
         cur_capacity: '',
-        courses: [
-          {
-            "id": 1,
-            "course_id":"1",
-            "name": '数据库',
-            "teacher": 'Mrs.Lang',
-            "classroom": 'F',
-            "max_capacity": '100',
-            "cur_capacity": '99',
-          },          {
-            "id": 2,
-            "course_id":"2",
-            "name": '编译技术',
-            "teacher": 'Mr.Hu',
-            "classroom": 'H',
-            "max_capacity": '120',
-            "cur_capacity": '119',
-          },          {
-            "id": 2,
-            "course_id":"2",
-            "name": '编译技术',
-            "teacher": 'Mr.Hu',
-            "classroom": 'H',
-            "max_capacity": '120',
-            "cur_capacity": '119',
-          },          {
-            "id": 2,
-            "course_id":"2",
-            "name": '编译技术',
-            "teacher": 'Mr.Hu',
-            "classroom": 'H',
-            "max_capacity": '120',
-            "cur_capacity": '119',
-          },          {
-            "id": 2,
-            "course_id":"2",
-            "name": '编译技术',
-            "teacher": 'Mr.Hu',
-            "classroom": 'H',
-            "max_capacity": '120',
-            "cur_capacity": '119',
-          },          {
-            "id": 2,
-            "course_id":"2",
-            "name": '编译技术',
-            "teacher": 'Mr.Hu',
-            "classroom": 'H',
-            "max_capacity": '120',
-            "cur_capacity": '119',
-          },          {
-            "id": 2,
-            "course_id":"2",
-            "name": '编译技术',
-            "teacher": 'Mr.Hu',
-            "classroom": 'H',
-            "max_capacity": '120',
-            "cur_capacity": '119',
-          },          {
-            "id": 2,
-            "course_id":"2",
-            "name": '编译技术',
-            "teacher": 'Mr.Hu',
-            "classroom": 'H',
-            "max_capacity": '120',
-            "cur_capacity": '119',
-          },          {
-            "id": 2,
-            "course_id":"2",
-            "name": '编译技术',
-            "teacher": 'Mr.Hu',
-            "classroom": 'H',
-            "max_capacity": '120',
-            "cur_capacity": '119',
-          },          {
-            "id": 2,
-            "course_id":"2",
-            "name": '编译技术',
-            "teacher": 'Mr.Hu',
-            "classroom": 'H',
-            "max_capacity": '120',
-            "cur_capacity": '119',
-          },          {
-            "id": 2,
-            "course_id":"2",
-            "name": '编译技术',
-            "teacher": 'Mr.Hu',
-            "classroom": 'H',
-            "max_capacity": '120',
-            "cur_capacity": '119',
-          },
-        ]
+        courses: [ ]
       },
       page: 1,
       jumpPage: '',
@@ -244,10 +109,31 @@ export default {
       await this.updateWithFix();
     }
   },
+  async mounted() {
+    await this.refresh();
+  },
   methods: {
     async refresh() {
+      let payload = {
+        limit: this.itemsPerPage,
+        offset: (this.page - 1) * this.itemsPerPage
+      };
+      if (this.filter.id !== null && this.filter.id !== '') {
+        payload['course_id'] = this.filter.course_id;
+      }
+      if (this.filter.name !== null && this.filter.name !== '') {
+        payload['name'] = this.filter.name;
+      }
+      if (this.filter.teacher !== null && this.filter.teacher !== '') {
+        payload['teacher'] = this.filter.teacher;
+      }
+      if (this.filter.classroom !== null && this.filter.classroom !== '') {
+        payload['classroom'] = this.filter.classroom;
+      }
+      let response = await queryAllCourse(payload);
+      console.log(response)
+      this.filter.courses = response.data
       this.pageCount = Math.ceil(this.filter.courses.length / this.itemsPerPage);
-      console.log(this.pageCount);
     },
     async jump() {
       let next = !isNaN(parseInt(this.jumpPage, 10)) ? parseInt(this.jumpPage) : this.page;
