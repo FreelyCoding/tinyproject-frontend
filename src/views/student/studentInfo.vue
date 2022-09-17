@@ -250,7 +250,7 @@
 
 
 <script>
-import {delClass, getStudentProfile, queryStudentCourse, updateStudent} from "@/api/student";
+import {delClass, getStudentProfile, queryStudentCourse, queryStudentSelectable, updateStudent} from "@/api/student";
 
 export default {
   data () {
@@ -472,6 +472,22 @@ export default {
       ];
     },
   },
+  watch: {
+    cur_course_page: async function () {
+      await this.refresh();
+    },
+    cur_course_itemsPerPage: async function () {
+      await this.updateWithFix();
+    },
+    available_course_page: async function () {
+      await this.refresh();
+    },
+    available_course_itemsPerPage: async function () {
+      await this.updateWithFix();
+    },
+  },
+
+
   beforeMount() {
     this.dialogWidth = this.$vuetify.breakpoint.mobile ? '85%' : '30%';
   },
@@ -479,6 +495,19 @@ export default {
     await this.refresh();
   },
   methods: {
+    async updateWithFix() {
+      // cur_page设了一个watch属性，如果cur_page的值发生变化，则一定会刷新页面
+      if (this.cur_course_page === 1) {
+        await this.refresh();
+      } else {
+        this.cur_course_page = 1;
+      }
+      if (this.available_course_page === 1) {
+        await this.refresh();
+      } else {
+        this.available_course_page = 1;
+      }
+    },
     async quit(item) {
       let payload = {
         student_id: this.student_profile['student_id'],
@@ -495,12 +524,19 @@ export default {
       let response_profile = await getStudentProfile(payload);
       console.log(response_profile)
       this.student_profile = response_profile.data;
+
       let response_current_course = await queryStudentCourse(payload);
       console.log(response_current_course)
       this.cur_course_filter.courses = response_current_course.data;
+      this.cur_course_pageCount = Math.ceil(this.cur_course_filter.courses.length / this.cur_course_itemsPerPage);
+
+      let response_available_course = await queryStudentSelectable(payload);
+      console.log(response_available_course)
+      this.available_course_filter.courses = response_available_course.data;
+      this.available_course_pageCount = Math.ceil(this.available_course_filter.courses.length / this.available_course_itemsPerPage);
     },
     async cur_course_jump() {
-      let next = !isNaN(parseInt(this.cur_course_jumpPage, 10)) ? parseInt(this.cur_course_jumpPage) : this.page;
+      let next = !isNaN(parseInt(this.cur_course_jumpPage, 10)) ? parseInt(this.cur_course_jumpPage) : this.cur_course_page;
       next = Math.min(Math.max(1, next), this.cur_course_pageCount);
       if (next !== this.cur_course_page) {
         this.cur_course_page = next;
@@ -508,7 +544,7 @@ export default {
       this.cur_course_jumpPage = '';
     },
     async available_course_jump() {
-      let next = !isNaN(parseInt(this.available_course_jumpPage, 10)) ? parseInt(this.available_course_jumpPage) : this.page;
+      let next = !isNaN(parseInt(this.available_course_jumpPage, 10))  ? parseInt(this.available_course_jumpPage) : this.available_course_page;
       next = Math.min(Math.max(1, next), this.available_course_pageCount);
       if (next !== this.available_course_page) {
         this.available_course_page = next;
