@@ -5,6 +5,8 @@ import AboutView from "@/views/about/AboutView";
 import MainView from "@/views/main/MainView";
 import studentManage from "@/views/student/studentManage";
 import studentInfo from "@/views/student/studentInfo";
+import courseManage from "@/views/course/courseManage";
+import courseInfo from "@/views/course/courseInfo";
 
 Vue.use(VueRouter)
 
@@ -12,6 +14,7 @@ const routes = [
   {
     path: '/',
     name: 'home',
+    redirect: '/main',
     component: HomeView,
     children: [
       {
@@ -53,7 +56,19 @@ const routes = [
   {
     path: '/course',
     name: 'course',
-    component: HomeView
+    component: HomeView,
+    children: [
+      {
+        path: 'course-manage',
+        name: 'course-manage',
+        component: courseManage
+      },
+      {
+        path: 'course-info/:id',
+        name: 'course-info',
+        component: courseInfo
+      }
+    ]
   }
 ]
 
