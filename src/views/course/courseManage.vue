@@ -6,22 +6,16 @@
         tile
     >
       <v-toolbar dense>
-        <v-app-bar-nav-icon></v-app-bar-nav-icon>
+        <v-btn icon class="hidden-xs-only" @click="roll_back">
+          <v-icon>mdi-arrow-left</v-icon>
+        </v-btn>
 
         <v-toolbar-title>课程管理</v-toolbar-title>
 
         <v-spacer></v-spacer>
 
-        <v-btn icon>
-          <v-icon>mdi-magnify</v-icon>
-        </v-btn>
-
-        <v-btn icon>
+        <v-btn icon @click="reveal_like_dialog = true">
           <v-icon>mdi-heart</v-icon>
-        </v-btn>
-
-        <v-btn icon>
-          <v-icon>mdi-dots-vertical</v-icon>
         </v-btn>
       </v-toolbar>
     </v-card>
@@ -74,6 +68,20 @@
 
       </v-card>
     </v-container>
+    <v-dialog v-model="reveal_like_dialog" :max-width="dialogWidth">
+      <v-card>
+        <v-card-title>
+        </v-card-title>
+        <v-card-text>
+          <p class="text-h4 text--primary">
+            感谢支持
+          </p>
+        </v-card-text>
+        <v-btn @click="reveal_like_dialog = false">
+          关闭
+        </v-btn>
+      </v-card>
+    </v-dialog>
   </v-app>
 </template>
 
@@ -84,6 +92,8 @@ export default {
   data () {
     return {
       name: 'courseManage',
+      reveal_like_dialog: false,
+      dialogWidth: null,
       filter: {
         id: '',
         course_id:'',
@@ -112,7 +122,13 @@ export default {
   async mounted() {
     await this.refresh();
   },
+  beforeMount() {
+    this.dialogWidth = this.$vuetify.breakpoint.mobile ? '85%' : '30%';
+  },
   methods: {
+    roll_back() {
+      this.$router.back();
+    },
     async refresh() {
       let payload = {
         limit: this.itemsPerPage,

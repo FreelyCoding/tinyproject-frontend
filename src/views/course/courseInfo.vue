@@ -5,23 +5,17 @@
         flat
         tile
     >
-      <v-toolbar flat>
-        <v-app-bar-nav-icon></v-app-bar-nav-icon>
+      <v-toolbar dense>
+        <v-btn icon class="hidden-xs-only" @click="roll_back">
+          <v-icon>mdi-arrow-left</v-icon>
+        </v-btn>
 
         <v-toolbar-title>课程管理</v-toolbar-title>
 
         <v-spacer></v-spacer>
 
-        <v-btn icon>
-          <v-icon>mdi-magnify</v-icon>
-        </v-btn>
-
-        <v-btn icon>
+        <v-btn icon @click="reveal_like_dialog = true">
           <v-icon>mdi-heart</v-icon>
-        </v-btn>
-
-        <v-btn icon>
-          <v-icon>mdi-dots-vertical</v-icon>
         </v-btn>
       </v-toolbar>
     </v-card>
@@ -199,6 +193,20 @@
       </v-tab-item>
 
     </v-tabs>
+    <v-dialog v-model="reveal_like_dialog" :max-width="dialogWidth">
+      <v-card>
+        <v-card-title>
+        </v-card-title>
+        <v-card-text>
+          <p class="text-h4 text--primary">
+            感谢支持
+          </p>
+        </v-card-text>
+        <v-btn @click="reveal_like_dialog = false">
+          关闭
+        </v-btn>
+      </v-card>
+    </v-dialog>
 
   </v-app>
 </template>
@@ -214,6 +222,7 @@ export default {
       tab: null,
       dialogWidth: null,
       dialog: false,
+      reveal_like_dialog: false,
       editedItem: {
         // TODO: 改成向后端请求course_profile后，这里就不用赋初值了
         id: '',
@@ -249,97 +258,7 @@ export default {
         name: '',
         class: '',
         college_grade: '',
-        students: [
-          {
-            "id": 1,
-            "student_id": 20231000,
-            "name": 'Jack',
-            "college_grade": 2020,
-            "major": '计算机科学与技术',
-            'class': 200611,
-            'email': '114514@gmail.com',
-          },          {
-            "id": 1,
-            "student_id": 20231000,
-            "name": 'Jack',
-            "college_grade": 2020,
-            "major": '计算机科学与技术',
-            'class': 200611,
-            'email': '114514@gmail.com',
-          },          {
-            "id": 1,
-            "student_id": 20231000,
-            "name": 'Jack',
-            "college_grade": 2020,
-            "major": '计算机科学与技术',
-            'class': 200611,
-            'email': '114514@gmail.com',
-          },          {
-            "id": 1,
-            "student_id": 20231000,
-            "name": 'Jack',
-            "college_grade": 2020,
-            "major": '计算机科学与技术',
-            'class': 200611,
-            'email': '114514@gmail.com',
-          },          {
-            "id": 1,
-            "student_id": 20231000,
-            "name": 'Jack',
-            "college_grade": 2020,
-            "major": '计算机科学与技术',
-            'class': 200611,
-            'email': '114514@gmail.com',
-          },          {
-            "id": 1,
-            "student_id": 20231000,
-            "name": 'Jack',
-            "college_grade": 2020,
-            "major": '计算机科学与技术',
-            'class': 200611,
-            'email': '114514@gmail.com',
-          },          {
-            "id": 1,
-            "student_id": 20231000,
-            "name": 'Jack',
-            "college_grade": 2020,
-            "major": '计算机科学与技术',
-            'class': 200611,
-            'email': '114514@gmail.com',
-          },          {
-            "id": 1,
-            "student_id": 20231000,
-            "name": 'Jack',
-            "college_grade": 2020,
-            "major": '计算机科学与技术',
-            'class': 200611,
-            'email': '114514@gmail.com',
-          },          {
-            "id": 1,
-            "student_id": 20231000,
-            "name": 'Jack',
-            "college_grade": 2020,
-            "major": '计算机科学与技术',
-            'class': 200611,
-            'email': '114514@gmail.com',
-          },          {
-            "id": 1,
-            "student_id": 20231000,
-            "name": 'Jack',
-            "college_grade": 2020,
-            "major": '计算机科学与技术',
-            'class': 200611,
-            'email': '114514@gmail.com',
-          },          {
-            "id": 1,
-            "student_id": 20231000,
-            "name": 'Jack',
-            "college_grade": 2020,
-            "major": '计算机科学与技术',
-            'class': 200611,
-            'email': '114514@gmail.com',
-          },
-        ]
+        students: []
       },
       cur_student_page: 1,
       cur_student_jumpPage: '',
@@ -460,8 +379,6 @@ export default {
       await this.updateWithFix();
     },
   },
-
-
   beforeMount() {
     this.dialogWidth = this.$vuetify.breakpoint.mobile ? '85%' : '30%';
   },
@@ -469,6 +386,9 @@ export default {
     await this.refresh();
   },
   methods: {
+    roll_back() {
+      this.$router.back();
+    },
     async updateWithFix() {
       // cur_page设了一个watch属性，如果cur_page的值发生变化，则一定会刷新页面
       if (this.cur_student_page === 1) {

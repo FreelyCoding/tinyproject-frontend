@@ -58,7 +58,7 @@ export default {
         {
           action: 'mdi-file-tree',
           title: '课程管理',
-          index: '/course',
+          index: '/course/course-manage',
           icon: 'mdi-view-dashboard'
         },
         {
