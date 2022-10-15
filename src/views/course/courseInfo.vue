@@ -272,10 +272,6 @@ export default {
     cur_student_headers() {
       return [
         {
-          text: 'ID',
-          value: 'id'
-        },
-        {
           text: '学号',
           value: 'student_id'
         },

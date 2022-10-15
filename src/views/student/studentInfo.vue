@@ -425,10 +425,6 @@ export default {
     available_course_headers() {
       return [
         {
-          text: 'ID',
-          value: 'id'
-        },
-        {
           text: '课程号',
           value: 'course_id'
         },
