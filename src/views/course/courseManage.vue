@@ -203,10 +203,6 @@ export default {
     headers() {
       return [
         {
-          text: 'ID',
-          value: 'id'
-        },
-        {
           text: '课程号',
           value: 'course_id'
         },
@@ -221,7 +217,6 @@ export default {
         {
           text: '教室',
           value: 'classroom',
-          width: '12%'
         },
         {
           text: '最大容量',
@@ -234,7 +229,6 @@ export default {
         {
           text: '课程管理',
           value: 'action',
-          width: '32%'
         }
       ];
     }
