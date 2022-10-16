@@ -200,16 +200,13 @@ export default {
     headers() {
       return [
         {
-          text: 'ID',
-          value: 'id'
-        },
-        {
           text: '学号',
           value: 'student_id'
         },
         {
           text: '姓名',
-          value: 'name'
+          value: 'name',
+          width:'10%'
         },
         {
           text: '年级',
@@ -218,6 +215,7 @@ export default {
         {
           text: '专业',
           value: 'major',
+          width: '10%'
         },
         {
           text: '班级',
